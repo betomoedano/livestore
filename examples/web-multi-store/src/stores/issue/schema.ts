@@ -5,6 +5,7 @@ export const issueTables = {
     name: 'issue',
     columns: {
       id: State.SQLite.text({ primaryKey: true }),
+      workspaceId: State.SQLite.text({ nullable: false }),
       parentIssueId: State.SQLite.text({ nullable: true }),
       title: State.SQLite.text({ nullable: false }),
       status: State.SQLite.text({ default: 'todo' }),
@@ -19,6 +20,7 @@ export const issueEvents = {
     name: 'v1.IssueCreated',
     schema: Schema.Struct({
       id: Schema.String,
+      workspaceId: Schema.String,
       title: Schema.String,
       createdAt: Schema.Date,
     }),
@@ -33,7 +35,8 @@ export const issueEvents = {
 }
 
 const materializers = State.SQLite.materializers(issueEvents, {
-  'v1.IssueCreated': ({ id, title, createdAt }) => issueTables.issue.insert({ id, title, createdAt }),
+  'v1.IssueCreated': ({ id, workspaceId, title, createdAt }) =>
+    issueTables.issue.insert({ id, workspaceId, title, createdAt }),
   'v1.IssueStatusChanged': ({ id, status }) => issueTables.issue.update({ status }).where({ id }),
 })
 
