@@ -23,6 +23,7 @@
 - **Schema-first tables:** LiveStore now accepts Effect schema definitions as SQLite table definitions, removing duplicate column configuration in applications (#544).
 - **Materializer hash checks:** Development builds now hash materializer output and raise `LiveStore.MaterializerHashMismatchError` when handlers diverge, catching non-pure implementations before they affect replay (26301e51, #503).
 - **Cloudflare sync provider storage:** Default storage is now Durable Object (DO) SQLite, with an explicit option to use D1 via a named binding. Examples and docs updated to the DO‑by‑default posture (see issue #266, #693).
+- **MCP support:** LiveStore now ships a CLI with a first-class MCP server so automation flows can connect to instances, query data, and commit events using the bundled tools (#705).
 
 ### Fixes
 
@@ -195,6 +196,7 @@ Key improvements include streaming pull operations (faster initial sync), a two-
 
 #### API & DX
 
+- **Store:** `store.networkStatus` now surfaces sync backend connectivity so apps can read the latest status or subscribe directly; the signal is no longer re-exposed on client sessions (livestorejs/livestore#394).
 - `LiveStoreSchema.Any` type alias simplifies schema composition across adapters.
 - Query builder const assertions improve type inference, and `store.subscribe()` now accepts query builders (#371, thanks @rgbkrk).
 - Store operations after shutdown are rejected with a descriptive `UnexpectedError`. Shutdown now returns an Effect (see breaking changes).
@@ -236,10 +238,12 @@ Key improvements include streaming pull operations (faster initial sync), a two-
 
 #### Docs & Examples
 
-- **CF Chat:** A Cloudflare Durable Objects chat example demonstrates WebSocket sync, reactive message handling, and bot integrations across client React components and Durable Object services.
+- **New example: CF Chat:** A Cloudflare Durable Objects chat example demonstrates WebSocket sync, reactive message handling, and bot integrations across client React components and Durable Object services.
 - Cloudflare examples now default to DO SQLite storage. D1 usage is documented via an explicit binding and a one‑line `storage` option in code.
 - Add Netlify dev deployments for examples to simplify testing (#684).
 - Use Twoslash for select getting started snippets in docs (#658).
+- **Docs for coding agents:** Documentation now serves agent-optimised Markdown so automations get concise answers without burning unnecessary tokens (#715).
+- **TypeScript-validated snippets:** Most examples are now type checked through the Twoslash pipeline enabling in-docs intellisense (#715).
 
 #### Experimental features
 - LiveStore CLI for project scaffolding (experimental preview, not production-ready)
@@ -266,6 +270,7 @@ Key improvements include streaming pull operations (faster initial sync), a two-
 - Pre-commit hooks via Husky (#522)
 - Comprehensive dependency update script (#516)
 - Add GitHub issue templates to improve issue quality (#602)
+- Reworked the documentation tooling so maintainers continuously publish token-efficient, TypeScript-backed snippets that stay reliable for coding agents (#715)
 
 #### wa-sqlite Integration
 
